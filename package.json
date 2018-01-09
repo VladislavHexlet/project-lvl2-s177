@@ -1,13 +1,14 @@
 {
   "name": "project-lvl2-s177vladislav",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "",
-  "main": "",
+  "main": "src/bin/gendiff.js",
   "scripts": {
     "babel-node": "babel-node",
     "eslint": "eslint",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "jest"
   },
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
@@ -22,9 +23,12 @@
     "babel-preset-stage-0": "*",
     "eslint": "^4.15.0",
     "eslint-config-airbnb-base": "*",
-    "eslint-plugin-import": "*"
+    "eslint-plugin-import": "*",
+    "jest": "^21",
+    "jest-cli": "*"
   },
   "dependencies": {
-    "commander": "*"
+    "commander": "*",
+    "lodash": "*"
   }
 }
