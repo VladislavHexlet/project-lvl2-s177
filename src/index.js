@@ -1,9 +1,21 @@
 import _ from 'lodash';
-import CreateFileOpener from './openers/CreateFileOpener';
+import fs from 'fs';
+import yaml from 'js-yaml';
+import ini from 'ini';
+
+const parser = {
+  json: jsonFile => JSON.parse(jsonFile),
+  yaml: yamlFile => yaml.safeLoad(yamlFile),
+  ini: iniFile => ini.parse(iniFile),
+};
 
 const genDiff = (pathOldConfig, pathNewConfig) => {
-  const fileOpener = CreateFileOpener(pathOldConfig, pathNewConfig);
-  const [oldConfigObj, newConfigObj] = fileOpener.openFiles();
+  const oldFile = fs.readFileSync(pathOldConfig, 'utf-8');
+  const newFile = fs.readFileSync(pathNewConfig, 'utf-8');
+  const fileExt = pathOldConfig.split('.').pop();
+  const parserFunc = parser[fileExt];
+  const oldConfigObj = parserFunc(oldFile);
+  const newConfigObj = parserFunc(newFile);
   const oldConfigObjKeys = Object.keys(oldConfigObj);
   const newConfigObjKeys = Object.keys(newConfigObj);
   const unitedKeys = _.union(oldConfigObjKeys, newConfigObjKeys);
