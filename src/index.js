@@ -1,24 +1,22 @@
-import fs from 'fs';
 import _ from 'lodash';
+import CreateFileOpener from './openers/CreateFileOpener';
 
-const genDiff = (pathOldJson, pathNewJson) => {
-  const oldJson = fs.readFileSync(pathOldJson);
-  const newJson = fs.readFileSync(pathNewJson);
-  const oldJsonObj = JSON.parse(oldJson);
-  const newJsonObj = JSON.parse(newJson);
-  const oldJsonObjKeys = Object.keys(oldJsonObj);
-  const newJsonObjKeys = Object.keys(newJsonObj);
-  const unitedKeys = _.union(oldJsonObjKeys, newJsonObjKeys);
+const genDiff = (pathOldConfig, pathNewConfig) => {
+  const fileOpener = CreateFileOpener(pathOldConfig, pathNewConfig);
+  const [oldConfigObj, newConfigObj] = fileOpener.openFiles();
+  const oldConfigObjKeys = Object.keys(oldConfigObj);
+  const newConfigObjKeys = Object.keys(newConfigObj);
+  const unitedKeys = _.union(oldConfigObjKeys, newConfigObjKeys);
 
   const resultArr = unitedKeys.map((el) => {
-    if (newJsonObj[el] === oldJsonObj[el]) {
-      return `   ${el}: ${newJsonObj[el]}`;
-    } else if (!newJsonObjKeys.includes(el)) {
-      return `  - ${el}: ${oldJsonObj[el]}`;
-    } else if (!oldJsonObjKeys.includes(el)) {
-      return `  + ${el}: ${newJsonObj[el]}`;
+    if (newConfigObj[el] === oldConfigObj[el]) {
+      return `   ${el}: ${newConfigObj[el]}`;
+    } else if (!newConfigObjKeys.includes(el)) {
+      return `  - ${el}: ${oldConfigObj[el]}`;
+    } else if (!oldConfigObjKeys.includes(el)) {
+      return `  + ${el}: ${newConfigObj[el]}`;
     }
-    return [`  + ${el}: ${newJsonObj[el]}`, `  - ${el}: ${oldJsonObj[el]}`];
+    return [`  + ${el}: ${newConfigObj[el]}`, `  - ${el}: ${oldConfigObj[el]}`];
   });
 
   const result = _.flattenDeep(resultArr);

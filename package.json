@@ -1,9 +1,9 @@
 {
   "name": "project-lvl2-s177vladislav",
   "jest": {
-    "modulePathIgnorePatterns": ["<rootDir>/__tests__/__fixtures__"] 
+    "modulePathIgnorePatterns": ["<rootDir>/__tests__/__fixtures__"]
   },
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "",
   "main": "src/bin/gendiff.js",
   "scripts": {
@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "commander": "*",
-    "lodash": "*"
+    "lodash": "*",
+    "js-yaml": "*"
   }
 }
