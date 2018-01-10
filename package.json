@@ -1,6 +1,9 @@
 {
   "name": "project-lvl2-s177vladislav",
-  "version": "0.0.8",
+  "jest": {
+    "modulePathIgnorePatterns": ["<rootDir>/__tests__/__fixtures__"] 
+  },
+  "version": "0.0.12",
   "description": "",
   "main": "src/bin/gendiff.js",
   "scripts": {

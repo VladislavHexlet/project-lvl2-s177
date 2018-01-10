@@ -7,9 +7,8 @@ program
   .description('Compares two configuration files and shows a difference.')
   .option('-V, --version', 'output the version number')
   .option('-f, --format [type]', 'Output format')
-  .parse(process.argv);
+  .action((firstConfig, secondConfig) => {
+    console.log(genDiff(firstConfig, secondConfig));
+  });
 
-const firstArg = process.argv[2];
-const secondArg = process.argv[3];
-
-console.log(genDiff(firstArg, secondArg));
+program.parse(process.argv);

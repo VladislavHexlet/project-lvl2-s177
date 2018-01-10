@@ -1,8 +1,8 @@
-import genDiff from '..';
+import genDiff from '../src';
 
 
-const pathOldJson = 'before.json';
-const pathNewJson = 'after.json';
+const pathOldJson = '__tests__/__fixtures__/before.json';
+const pathNewJson = '__tests__/__fixtures__/after.json';
 
 it('should work', () => {
   expect(genDiff(pathOldJson, pathNewJson)).toBe(`
