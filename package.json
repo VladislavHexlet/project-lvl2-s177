@@ -5,7 +5,7 @@
       "<rootDir>/__tests__/__fixtures__"
     ]
   },
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "",
   "main": "src/bin/gendiff.js",
   "scripts": {
@@ -29,6 +29,8 @@
     "eslint": "^4.15.0",
     "eslint-config-airbnb-base": "*",
     "eslint-plugin-import": "*",
+    "eslint-plugin-flowtype": "*",
+    "eslint-plugin-jest": "*",
     "jest": "^21",
     "jest-cli": "*"
   },

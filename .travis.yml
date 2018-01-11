@@ -4,4 +4,4 @@ language: node_js
 node_js:
   - stable
 
-script: npm run eslint — src/ && npm test
+script: make lint test

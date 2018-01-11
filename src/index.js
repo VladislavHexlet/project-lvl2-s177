@@ -2,17 +2,18 @@ import _ from 'lodash';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import ini from 'ini';
+import path from 'path';
 
 const parser = {
-  json: jsonFile => JSON.parse(jsonFile),
-  yaml: yamlFile => yaml.safeLoad(yamlFile),
-  ini: iniFile => ini.parse(iniFile),
+  '.json': JSON.parse,
+  '.yaml': yaml.safeLoad,
+  '.ini': ini.parse,
 };
 
 const genDiff = (pathOldConfig, pathNewConfig) => {
   const oldFile = fs.readFileSync(pathOldConfig, 'utf-8');
   const newFile = fs.readFileSync(pathNewConfig, 'utf-8');
-  const fileExt = pathOldConfig.split('.').pop();
+  const fileExt = path.extname(pathOldConfig);
   const parse = parser[fileExt];
   const oldConfigObj = parse(oldFile);
   const newConfigObj = parse(newFile);
