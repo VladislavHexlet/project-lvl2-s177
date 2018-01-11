@@ -13,9 +13,9 @@ const genDiff = (pathOldConfig, pathNewConfig) => {
   const oldFile = fs.readFileSync(pathOldConfig, 'utf-8');
   const newFile = fs.readFileSync(pathNewConfig, 'utf-8');
   const fileExt = pathOldConfig.split('.').pop();
-  const parserFunc = parser[fileExt];
-  const oldConfigObj = parserFunc(oldFile);
-  const newConfigObj = parserFunc(newFile);
+  const parse = parser[fileExt];
+  const oldConfigObj = parse(oldFile);
+  const newConfigObj = parse(newFile);
   const oldConfigObjKeys = Object.keys(oldConfigObj);
   const newConfigObjKeys = Object.keys(newConfigObj);
   const unitedKeys = _.union(oldConfigObjKeys, newConfigObjKeys);
