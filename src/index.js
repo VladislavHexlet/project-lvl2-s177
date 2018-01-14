@@ -23,7 +23,7 @@ const parseToAst = (oldFile, newFile) => {
         };
       }
       return {
-        name: key, type: 'stay', value: '', children: parseToAst(oldFile[key], newFile[key]),
+        name: key, type: 'stay', value: parseToAst(oldFile[key], newFile[key]),
       };
     } else if (!newFileKeys.includes(key)) {
       if (!(oldFile[key] instanceof Object)) {
@@ -32,7 +32,7 @@ const parseToAst = (oldFile, newFile) => {
         };
       }
       return {
-        name: key, type: 'removed', value: '', children: parseToAst(oldFile[key], oldFile[key]),
+        name: key, type: 'removed', value: parseToAst(oldFile[key], oldFile[key]),
       };
     } else if (!oldFileKeys.includes(key)) {
       if (!(newFile[key] instanceof Object)) {
@@ -41,12 +41,12 @@ const parseToAst = (oldFile, newFile) => {
         };
       }
       return {
-        name: key, type: 'added', value: '', children: parseToAst(newFile[key], newFile[key]),
+        name: key, type: 'added', value: parseToAst(newFile[key], newFile[key]),
       };
     }
     if (newFile[key] instanceof Object) {
       return {
-        name: key, type: 'stay', value: '', children: parseToAst(oldFile[key], newFile[key]),
+        name: key, type: 'stay', value: parseToAst(oldFile[key], newFile[key]),
       };
     }
     return {
@@ -55,30 +55,20 @@ const parseToAst = (oldFile, newFile) => {
   });
 };
 
-const createRootAst = (oldFile, newFile) => ({ children: parseToAst(oldFile, newFile) });
+const createRootAst = (oldFile, newFile) => ({ value: parseToAst(oldFile, newFile) });
 
 const render = (ast, repeatN = 1) => {
-  // const content = ast.children ? ast.children.map(render).join('') : ast.value;
   const indentLength = '    '.repeat(repeatN);
   const indentLengthSigns = indentLength.slice(0, indentLength.length - 2);
-  const result = ast.children.map((node) => {
+  const result = ast.value.map((node) => {
+    const content = _.isObject(node.value) ? `{\n${render(node, repeatN + 1)}\n${indentLength}}` : node.value;
     switch (node.type) {
       case 'stay':
-        if (node.children) {
-          return `${indentLength}${node.name}: {\n${render(node, repeatN + 1)}\n${indentLength}}`;
-        }
-        return `${indentLength}${node.name}: ${node.value}`;
-        // return `${ast.name}: ${content}\n`;
+        return `${indentLength}${node.name}: ${content}`;
       case 'added':
-        if (node.children) {
-          return `${indentLengthSigns}+ ${node.name}: {\n${render(node, repeatN + 1)}\n${indentLength}}`;
-        }
-        return `${indentLengthSigns}+ ${node.name}: ${node.value}`;
+        return `${indentLengthSigns}+ ${node.name}: ${content}`;
       case 'removed':
-        if (node.children) {
-          return `${indentLengthSigns}- ${node.name}: {\n${render(node, repeatN + 1)}\n${indentLength}}`;
-        }
-        return `${indentLengthSigns}- ${node.name}: ${node.value}`;
+        return `${indentLengthSigns}- ${node.name}: ${content}`;
       case 'updated':
         return `${indentLengthSigns}+ ${node.name}: ${node.newValue}\n${indentLengthSigns}- ${node.name}: ${node.previousValue}`;
       default:
